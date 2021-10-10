@@ -1,6 +1,6 @@
 const express = require('express');
-const testeRoute = require('./testeRoute')
+const usersRoute = require('./usersRoute')
 
 module.exports = app =>{
-    app.use(express.json(), testeRoute)
+    app.use(express.json(), usersRoute)
 }
