@@ -12,13 +12,13 @@ class UsersController{
         }
     }
 
-
     static async createUser(req, res){
         try{
+            await usersServices.alreadyEmailRegistered(req, res);
             const userCreated = await usersServices.createARecord(req.body);
             return res.status(201).json(userCreated);
         }catch(error){
-            return res.status(400).json({message: error.message, name: error.name})
+            return res.status(400).json({message: error.message})
         }
     }
 
