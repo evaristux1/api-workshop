@@ -23,7 +23,7 @@ class UsersController{
     }
 
 
-    static async updateARecord (req, res) {
+    static async updateAUser (req, res) {
         const { id } = req.params
         const infoUpdated = req.body
         try {            
