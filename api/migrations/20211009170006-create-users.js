@@ -9,13 +9,16 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
+        allowNull:false,
         type: Sequelize.STRING
       },
       email: {
+        allowNull:false,
         type: Sequelize.STRING,
         unique: true
       },
       type: {
+        allowNull:false,
         type: Sequelize.ENUM('student', 'instructor')
       },
       createdAt: {

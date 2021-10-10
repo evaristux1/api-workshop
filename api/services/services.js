@@ -9,8 +9,8 @@ class Services{
         return database[this.modelName].findAll();
     }
     // Estilo de where esperado findOneRecord({where: {id: id}})
-    async findOneRecord(where){
-        return database[this.modelName].findOne(where)
+    async findOneRecord(where = {}){
+        return database[this.modelName].findOne({where: {...where}} )
     }
 
     async createARecord(data){
