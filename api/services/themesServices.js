@@ -1,20 +1,18 @@
 const Services = require("./services");
-const ThemeRegistered = require('../errors/ThemeRegistered')
+const EmailRegistered = require("../errors/EmailRegistered");
+class UsersServices extends Services {
+  constructor() {
+    super("Users");
+  }
 
-class ThemesServices extends Services{
-    constructor(){
-        super('Themes')
+  async alreadyEmailRegistered(req) {
+    const { email } = req.body;
+    if (email) {
+      const alreadyEmailRegistered = await this.findOneRecord({ email: email });
+      if (alreadyEmailRegistered) {
+        throw new EmailRegistered();
+      }
     }
-
-    async alreadyThemeRegistered(req){
-        const {title} = req.body;
-        if(title){
-            const alreadyThemeRegistered = await this.findOneRecord({title: title});
-            if(alreadyThemeRegistered){
-                throw new ThemeRegistered()
-            }
-        }
-    }
+  }
 }
-
-module.exports = new ThemesServices();
+module.exports = new UsersServices();
