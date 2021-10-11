@@ -54,16 +54,6 @@ class UsersController {
       return res.status(500).json({ message: error.message });
     }
   }
-  static async verifyToken(token) {
-    const verify = await jwt.verify(token, "workshop#@!");
-
-    const response = await usersServices.validateUserToken(req.body);
-
-    return response.length > 0;
-  }
-  catch(err) {
-    return false;
-  }
 }
 
 module.exports = UsersController;

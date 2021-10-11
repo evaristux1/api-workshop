@@ -8,18 +8,25 @@ class LoginServices extends Services {
   }
   async signIn(req) {
     const { email, password } = req.body;
-    console.log(
-      "🚀 ~ file: loginServices.js ~ line 11 ~ LoginServices ~ signIn ~ req.params",
-      req
-    );
 
     const user = await this.findOneRecord({
       email: email,
       password: password,
     });
 
-    if (!user.id) {
-      //TODO: thow Error user not exists;
+    if (!user) {
+      throw new Error("invalid email or password");
+    } else {
+      return jwt.sign({ id: user.id }, SECRET, {
+        expiresIn: "10h",
+      });
+    }
+  }
+  async validateUserToken(where) {
+    const user = await this.findOneRecord(where);
+
+    if (!user) {
+      throw new Error("invalid email or password");
     } else {
       return jwt.sign({ id: user.îd }, SECRET, {
         expiresIn: "10h",

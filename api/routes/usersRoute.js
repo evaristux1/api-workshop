@@ -5,16 +5,16 @@ const { Router } = require("express");
 const router = Router();
 
 //*auth
-router.post("/api/workshop/auth/login", LoginController.loginUser);
+router.post("/auth/login", LoginController.loginUser);
 //*users
-router.post("/api/workshop/users", UsersController.createUser);
+router.post("/users", UsersController.createUser);
 router.get(
-  "/api/workshop/users/:id",
+  "/users/:id",
   Middlewares.tokenValidade,
   UsersController.getUser
 );
 router.patch(
-  "/api/workshop/users/:id",
+  "/users/:id",
   Middlewares.tokenValidade,
   UsersController.updateAUser
 );

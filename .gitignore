@@ -1,7 +1,4 @@
 node_modules/
 package-lock.json
-<<<<<<< HEAD
 api/config/config.json
-=======
 .env
->>>>>>> feature/token

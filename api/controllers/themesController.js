@@ -1,4 +1,3 @@
-const database = require('../models');
 const {themesServices} = require('../services')
 
 class ThemesController{

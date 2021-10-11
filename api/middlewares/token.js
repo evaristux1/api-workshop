@@ -1,40 +1,31 @@
 const { usersServices } = require("../services");
+const UnauthenticatedUser = require("../errors/UnauthenticatedUser");
+const jwt = require("jsonwebtoken");
+const loginServices = require("../services/loginServices");
 
+require("dotenv").config();
+const { SECRET } = process.env;
 class Middlewares {
-  static async tokenCreate(req, res, next) {
-    try {
-      const token = req.headers.authorization.split(" ")[1];
-      const IDdecoded = await jwt.verify(token, "Tijuca#2!");
-
-      if (!token) return res.status(401).send({ msg: "unauthenticated user" });
-
-      const validate = await usersServices.validateUserToken({ id: IDdecoded });
-
-      if (validate) {
-        await next();
-      } else {
-        res.status(401).send({ msg: "invalid email or password" });
-      }
-    } catch (err) {
-      res.status(500).send({ msg: err });
-    }
-  }
   static async tokenValidade(req, res, next) {
     try {
-      const token = req.headers.authorization.split(" ")[1];
-      const IDdecoded = await jwt.verify(token, "Tijuca#2!");
-
-      if (!token) return res.status(401).send({ msg: "unauthenticated user" });
-
-      const validate = await usersServices.validateUserToken({ id: IDdecoded });
-
-      if (validate) {
-        await next();
+      const token = req.headers.authorization?.split(" ")[1];
+      if (!token) {
+        throw new UnauthenticatedUser();
       } else {
-        res.status(401).send({ msg: "invalid email or password" });
+        const IDdecoded = jwt.verify(token, SECRET);
+
+        const validate = await loginServices.validateUserToken({
+          id: IDdecoded.id,
+        });
+
+        if (validate) {
+          await next();
+        } else {
+          throw new UnauthenticatedUser();
+        }
       }
-    } catch (err) {
-      res.status(500).send({ msg: err });
+    } catch (error) {
+      return res.status(401).json({ message: error.message });
     }
   }
 }
