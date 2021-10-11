@@ -1,10 +1,22 @@
-const {Router} = require('express');
+const UsersController = require("../controllers/usersController");
+const LoginController = require("../controllers/loginController");
+const Middlewares = require("../middlewares/token");
+const { Router } = require("express");
 const router = Router();
-const UsersController = require('../controllers/usersController');
 
-// api/workshop/users
-router.get('/api/workshop/users/:id', UsersController.getUser);
-router.post('/api/workshop/users', UsersController.createUser);
-router.patch('/api/workshop/users/:id', UsersController.updateAUser);
+//*auth
+router.post("/auth/login", LoginController.loginUser);
+//*users
+router.post("/users", UsersController.createUser);
+router.get(
+  "/users/:id",
+  Middlewares.tokenValidade,
+  UsersController.getUser
+);
+router.patch(
+  "/users/:id",
+  Middlewares.tokenValidade,
+  UsersController.updateAUser
+);
 
 module.exports = router;

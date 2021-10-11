@@ -1,6 +1,15 @@
-const express = require('express');
-const usersRoute = require('./usersRoute')
+const usersRoute = require("./usersRoute");
+const themesRoute = require("./themesRoute");
+const express = require("express");
+const morgan = require("morgan");
 
-module.exports = app =>{
-    app.use(express.json(), usersRoute)
-}
+module.exports = (app) => {
+  app.use(
+    "/api/workshop",
+    express.json(),
+    morgan("dev"),
+    express.urlencoded({ extended: true }),
+    usersRoute,
+    themesRoute
+  );
+};
