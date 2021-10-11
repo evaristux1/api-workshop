@@ -28,9 +28,7 @@ class LoginServices extends Services {
     if (!user) {
       throw new Error("invalid email or password");
     } else {
-      return jwt.sign({ id: user.îd }, SECRET, {
-        expiresIn: "10h",
-      });
+      return user.id;
     }
   }
 }

@@ -1,5 +1,5 @@
-const { usersServices } = require("../services");
 const UnauthenticatedUser = require("../errors/UnauthenticatedUser");
+const UserWithoutPermission = require("../errors/UserWithoutPermission");
 const jwt = require("jsonwebtoken");
 const loginServices = require("../services/loginServices");
 
@@ -18,6 +18,9 @@ class Middlewares {
           id: IDdecoded.id,
         });
 
+        if (req.params.id != null && req.params.id != IDdecoded.id) {
+          throw new UserWithoutPermission();
+        }
         if (validate) {
           await next();
         } else {
@@ -25,7 +28,9 @@ class Middlewares {
         }
       }
     } catch (error) {
-      return res.status(401).json({ message: error.message });
+      return error.idError == 3
+        ? res.status(403).json({ message: error.message })
+        : res.status(401).json({ message: error.message });
     }
   }
 }
