@@ -18,12 +18,10 @@ class ThemesController{
     static async getAllThemes(req, res){
         try{
             let {page, pageSize} = req.query;
-            if(!page){
-                page = 1;
-            }
-            if(!pageSize){
-                pageSize = 5;
-            }
+            if(!page) page = 1;
+            
+            if(!pageSize) pageSize = 5;
+            
             //TODO paginação, falta criar a paginação.
             const allThemes = await themesServices.getAllRecords();
             res.status(200).json({totalPages: 1, totalItems: allThemes.length, data: allThemes})
