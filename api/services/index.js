@@ -1,5 +1,7 @@
 const UsersServices = require('./usersServices');
+const ThemesServices = require('./ThemesServices')
 
 module.exports = {
-    usersServices: UsersServices
+    usersServices: UsersServices,
+    themesServices: ThemesServices
 }

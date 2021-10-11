@@ -10,7 +10,7 @@ class Services{
     }
     // Estilo de where esperado findOneRecord({where: {id: id}})
     async findOneRecord(where = {}){
-        return database[this.modelName].findOne(where)
+        return database[this.modelName].findOne({where:{...where}})
     }
 
     async createARecord(data){
@@ -18,11 +18,11 @@ class Services{
     }
     // Estilo de where esperado updateARecord({where: {id: id}})
     async updateARecord(data, where){
-        return database[this.modelName].update(data, where)
+        return database[this.modelName].update(data, {where:{...where}})
     }
     // Estilo de where esperado deleteRecord({where: {id: id}})
     async deleteRecord(where){
-        return await database[this.modelName].destroy(where);
+        return await database[this.modelName].destroy({where:{...where}});
     }
 }
 

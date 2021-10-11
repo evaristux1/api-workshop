@@ -17,6 +17,10 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true
       },
+      password: {
+        allowNull:false,
+        type: Sequelize.STRING,
+      },
       type: {
         allowNull:false,
         type: Sequelize.ENUM('student', 'instructor')

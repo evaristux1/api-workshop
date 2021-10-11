@@ -5,11 +5,13 @@ class UsersServices extends Services{
         super('Users')
     }
 
-    async alreadyEmailRegistered(req, res){
+    async alreadyEmailRegistered(req){
         const {email} = req.body;
-        const alreadyEmailRegistered = await this.findOneRecord({where:{email: email}});
-        if(alreadyEmailRegistered){
-            throw new EmailRegistered()
+        if(email){
+            const alreadyEmailRegistered = await this.findOneRecord({email: email});
+            if(alreadyEmailRegistered){
+                throw new EmailRegistered()
+            }
         }
     }
 }
