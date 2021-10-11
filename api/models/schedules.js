@@ -10,10 +10,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      Schedules.hasMany(models.Schedules_themes,{
+        foreignKey:'scheduleId'
+      })
+
       Schedules.belongsTo(models.Users,{
         foreignKey:'instructorId'
       })
-
     }
   };
   Schedules.init({
