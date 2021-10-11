@@ -24,7 +24,11 @@ class ThemesController{
             
             //TODO paginação, falta criar a paginação.
             const allThemes = await themesServices.getAllRecords();
-            res.status(200).json({totalPages: 1, totalItems: allThemes.length, data: allThemes})
+            res.status(200).json({
+                totalPages: 1,
+                totalItems: allThemes.length,
+                data: allThemes
+            })
         }catch(error){
             return res.status(400).json({message: error.message})
         }
