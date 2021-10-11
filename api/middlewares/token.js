@@ -1,24 +1,24 @@
-const usuarios = require("../controllers/usuarios");
-
-
+const { usersServices } = require("../services");
 
 class Middlewares {
-async function middlewareToken(req, res, next) {
-  try {
-    const token = req.headers.authorization.split(" ")[1];
+  static async middlewareToken(req, res, next) {
+    try {
+      const token = req.headers.authorization.split(" ")[1];
+      const IDdecoded = await jwt.verify(token, "Tijuca#2!");
+      
+      if (!token) return res.status(401).send({ msg: "unauthenticated user" });
 
-    if (!token) return res.status(401).send({ msg: "unauthenticated user" });
+      const validate = await usersServices.validateUserToken({ id: IDdecoded });
 
-    const validate = await usuarios.verificar(token);
-
-    if (validate) {
-      await next();
-    } else {
-      res.status(401).send({ msg: "invalid email or password" });
+      if (validate) {
+        await next();
+      } else {
+        res.status(401).send({ msg: "invalid email or password" });
+      }
+    } catch (err) {
+      res.status(500).send({ msg: err });
     }
-  } catch (err) {
-    res.status(500).send({ msg: err });
   }
 }
 
-module.exports = middlewareToken;
+module.exports = Middlewares;
