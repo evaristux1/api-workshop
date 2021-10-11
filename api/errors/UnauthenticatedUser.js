@@ -5,3 +5,4 @@ class UnauthanticatedUser extends Error{
         this.idError = 6;
     }
 }
+module.exports = UnauthanticatedUser;
