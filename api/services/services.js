@@ -24,6 +24,10 @@ class Services{
     async deleteRecord(where){
         return await database[this.modelName].destroy({where:{...where}});
     }
+
+    async checkUserByToken(req, res){
+        //TODO deve retornar o ID do usuário autenticado pelo token
+    }
 }
 
 module.exports = Services;
