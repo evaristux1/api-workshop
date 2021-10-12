@@ -15,11 +15,9 @@ class LoginServices extends Services {
       email: email,
     });
 
-    if (!user || !bcrypt.compareSync(password, user.dataValues.password)) {
+    if (!user || !bcrypt.compareSync(password, user.dataValues.password))
       throw new Error("invalid email or password");
-    } else {
-      return jwt.sign({ id: user.id }, SECRET, {});
-    }
+    return jwt.sign({ id: user.id }, SECRET, {});
   }
   async validateUserToken(where) {
     const user = await this.findOneRecord(where);
