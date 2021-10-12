@@ -10,3 +10,5 @@ class InterestsController{
         }
     }
 }
+
+module.exports = InterestsController;
