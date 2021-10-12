@@ -75,29 +75,7 @@ module.exports = (sequelize, DataTypes) => {
       const salt = await bcrypt.genSaltSync(10, 'a');
       users.attributes.password = bcrypt.hashSync(users.attributes.password, salt);
     }
-  }),
-
-  Users.addHook('afterFind', async users => {
-    console.log(users);
-
-    const account = await Model.Users.findOne();
-
-  /*  if(users.where.password){
-      console.log(users.where.password);
-      const salt = await bcrypt.genSaltSync(10, 'a');
-      users.where.password = bcrypt.hashSync(users.where.password, salt);
-      const verified = bcrypt.compareSync(users.where.password, salt);
-
-      console.log(verified, 'teste');
-    }*/
-    
   })
-
-
-  Users.prototype.validPassword = async (password, hash) =>{
-    return await bcrypt.compareSync(password, hash)
-  }
-
 
   return Users;
 }
