@@ -1,6 +1,7 @@
 const usersRoute = require('./usersRoute');
 const themesRoute = require('./themesRoute');
 const interestsRoute = require('./interestsRoute')
+const schedulesRoute = require('./schedulesRoute');
 const express = require('express');
 const morgan = require('morgan');
 
@@ -12,6 +13,7 @@ module.exports = (app) => {
     express.urlencoded({ extended: true }),
     usersRoute,
     themesRoute,
-    interestsRoute
+    interestsRoute,
+    schedulesRoute
   );
 };
