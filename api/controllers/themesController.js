@@ -9,7 +9,7 @@ class ThemesController{
             // TODO: Ao cadastrar um tema o usuário autenticado deve ser automaticamente vinculado a este tema, 
             // Ou seja, userId deve ser o id do usuário logado.
             const themeCreated = await themesServices.createARecord(data)
-            return res.status(201).json({themeCreated: themeCreated})
+            return res.status(201).json({idTheme: themeCreated.id})
         }catch(error){
             return res.status(400).json({message: error.message})
         }

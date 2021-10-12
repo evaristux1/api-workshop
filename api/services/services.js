@@ -5,11 +5,11 @@ class Services {
   }
 
   async getAllRecords() {
-    return database[this.modelName].findAll();
+    return database[this.modelName].findAll({raw: true});
   }
   // Estilo de where esperado findOneRecord({where: {id: id}})
   async findOneRecord(where = {}) {
-    return database[this.modelName].findOne({ where: { ...where } });
+    return database[this.modelName].findOne({ where: { ...where }, raw: true});
   }
   async createARecord(data) {
     return database[this.modelName].create(data);
