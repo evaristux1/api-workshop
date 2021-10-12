@@ -14,5 +14,6 @@ class UsersServices extends Services {
       }
     }
   }
+
 }
 module.exports = new UsersServices();
