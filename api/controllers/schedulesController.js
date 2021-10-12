@@ -8,14 +8,28 @@ class SchedulesController{
         try{
             await usersServices.isUseraInstructor(req);
             res.end();
-
-
         }catch(error){
             return res.status(403).json({ message: error.message });
 
         }
     }
 
+    static async createSchedule(req, res){
+        let data = req.body;
+        data.userId = req.idUserToken;
+
+        try{
+            await schedulesServices.isDateLower(req);
+            await schedulesServices.createARecord(data);
+            res.end();
+
+
+        }catch(error){
+            return res.status(400).json({message: error.message})
+
+        }
+    
+    }
 
 }
 
