@@ -1,14 +1,14 @@
+const UserWithoutPermission = require("../errors/UserWithoutPermission");
 const { usersServices } = require("../services");
 
 class UsersController {
   static async getUser(req, res) {
     try {
-      //TODO user without permission, quando um usuario
-      //tentar ver o perfil de outro
-      const user = await usersServices.getUserWithoutPassword(req)
+      if (req.idUserToken != req.params.id) throw new UserWithoutPermission();
+      const user = await usersServices.getUserWithoutPassword(req);
       return res.status(200).json(user);
     } catch (error) {
-      return res.status(400).json({ message: error.message, name: error.name });
+      return res.status(400).json({ message: error.message });
     }
   }
   static async createUser(req, res) {

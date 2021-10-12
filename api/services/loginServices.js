@@ -25,11 +25,8 @@ class LoginServices extends Services {
   async validateUserToken(where) {
     const user = await this.findOneRecord(where);
 
-    if (!user) {
-      throw new Error("invalid email or password");
-    } else {
-      return user.id;
-    }
+    if (!user) throw new Error("invalid email or password");
+    return true;
   }
 }
 
