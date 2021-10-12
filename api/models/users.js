@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+
 const bcrypt = require('bcrypt');
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
@@ -39,18 +40,36 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     type: DataTypes.ENUM('student', 'instructor')
-  }, {
+  },
+  
+
+  {
     sequelize,
     modelName: 'Users',
-    freezeTableName: true
-  });
+    freezeTableName: true,
+    individualHooks: true,
+  })
 
-  Users.addHook('beforeSave', async users =>{
+
+  Users.addHook('beforeCreate', async users =>{
     if(users.password){
       const salt = await bcrypt.genSaltSync(10, 'a');
       users.password = bcrypt.hashSync(users.password, salt);
 
     }
+  }),
+
+  Users.addHook('beforeBulkUpdate', async users =>{
+    if(users.attributes.password){
+      const salt = await bcrypt.genSaltSync(10, 'a');
+      users.attributes.password = bcrypt.hashSync(users.attributes.password, salt);
+    }
   })
+
+
   return Users;
-};
+}
+
+
+  
+
