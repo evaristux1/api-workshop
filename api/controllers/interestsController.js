@@ -6,11 +6,11 @@ class InterestsController{
         let data = req.body;
         data.userId = req.idUserToken;
         try{
-            await interestsServices.alreadyInterestRegistered(req)
+            await interestsServices.alreadyInterestRegistered(req);
             await interestsServices.createARecord(data);
-            return res.status(201).end()
+            return res.status(201).end();
         }catch(error){
-            return res.status(400).json({message: error.message})
+            return res.status(400).json({message: error.message});
         }
     }
 
@@ -18,10 +18,19 @@ class InterestsController{
         try{
            const interestFound = await interestsServices.findInterest(req);
             if (req.idUserToken != interestFound.userId) throw new UserWithoutPermission();
-            await interestsServices.deleteARecord({id: interestFound.id})
-            return res.status(204).end()
+            await interestsServices.deleteARecord({id: interestFound.id});
+            return res.status(204).end();
         }catch(error){
-            return res.status(403).json({message: error.message})
+            return res.status(403).json({message: error.message});
+        }
+    }
+
+    static async getUserInterests(req, res){
+        try{
+            const userInterests = await interestsServices.createPagination(req);
+            return res.status(200).json(userInterests);
+        }catch(error){
+            return res.status(400).json({message: error.message});
         }
     }
 }

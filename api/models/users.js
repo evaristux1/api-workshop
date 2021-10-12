@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail:{
           args: true,
-          msg: 'email is not valid'
+          msg: 'email not isS valid'
         }
       }
     },
@@ -65,12 +65,10 @@ module.exports = (sequelize, DataTypes) => {
   },
   )
 
-
   Users.addHook('beforeCreate', async users =>{
     if(users.password){
       const salt = await bcrypt.genSaltSync(10, 'a');
       users.password = bcrypt.hashSync(users.password, salt);
-
     }
   }),
 
