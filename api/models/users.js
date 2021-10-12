@@ -22,7 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Users.init({
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     email: {
       type: DataTypes.STRING,
       unique: true,
@@ -37,7 +40,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       type: DataTypes.STRING,
     },
-    type: DataTypes.ENUM('student', 'instructor')
+    type: {
+      type: DataTypes.ENUM('student', 'instructor'),
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Users',

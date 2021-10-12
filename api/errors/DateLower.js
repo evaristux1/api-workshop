@@ -5,3 +5,5 @@ class DateLower extends Error{
         this.idError = 5;
     }
 }
+
+module.exports = DateLower;

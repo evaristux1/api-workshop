@@ -5,3 +5,5 @@ class InterestsRegistered extends Error{
         this.idError = 4;
     }
 }
+
+module.exports = InterestsRegistered;

@@ -3,11 +3,10 @@ const {themesServices} = require('../services')
 class ThemesController{
 
     static async createATheme(req, res){
+        let data = req.body;
+        data.userId = req.idUserToken;
         try{
-            const data = req.body;
             await themesServices.alreadyThemeRegistered(req);
-            // TODO: Ao cadastrar um tema o usuário autenticado deve ser automaticamente vinculado a este tema, 
-            // Ou seja, userId deve ser o id do usuário logado.
             const themeCreated = await themesServices.createARecord(data)
             return res.status(201).json({idTheme: themeCreated.id})
         }catch(error){
@@ -18,9 +17,8 @@ class ThemesController{
     static async getAllThemes(req, res){
         try{
             let {page, pageSize} = req.query;
-            if(!page) page = 1;
-            
-            if(!pageSize) pageSize = 5;
+            if(!page || page <= 0) page = 1;
+            if(!pageSize || pageSize > 15 || pageSize <= 0) pageSize = 5;
             
             //TODO paginação, falta criar a paginação.
             const allThemes = await themesServices.getAllRecords();

@@ -2,6 +2,16 @@ const UserWithoutPermission = require("../errors/UserWithoutPermission");
 const { usersServices } = require("../services");
 
 class UsersController {
+  static async createUser(req, res) {
+    try {
+      await usersServices.alreadyEmailRegistered(req);
+      const userCreated = await usersServices.createARecord(req.body);
+      return res.status(201).json({ idUser: userCreated.id });
+    } catch (error) {
+      return res.status(403).json({ message: error.message });
+    }
+  }
+
   static async getUser(req, res) {
     try {
       if (req.idUserToken != req.params.id) throw new UserWithoutPermission();
@@ -11,26 +21,17 @@ class UsersController {
       return res.status(400).json({ message: error.message });
     }
   }
-  static async createUser(req, res) {
-    try {
-      await usersServices.alreadyEmailRegistered(req);
-      const userCreated = await usersServices.createARecord(req.body);
-      return res.status(201).json({ idUser: userCreated.id });
-    } catch (error) {
-      return res.status(400).json({ message: error.message });
-    }
-  }
 
   static async updateAUser(req, res) {
     const { id } = req.params;
     const data = req.body;
     try {
-      //TODO mostrar o erro do email unique
+      if (req.idUserToken != req.params.id) throw new UserWithoutPermission();
+      await usersServices.alreadyEmailRegistered(req);
       await usersServices.updateARecord(data, { id: Number(id) });
       return res.status(204).end();
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: error.message });
+      return res.status(403).json({ message: error.message });
     }
   }
 }

@@ -1,8 +1,9 @@
+const ThemesController = require('../controllers/themesController');
+const Middlewares = require("../middlewares/token");
 const {Router} = require('express');
 const router = Router();
-const ThemesController = require('../controllers/themesController');
 
-router.post('/themes', ThemesController.createATheme);
+router.post('/themes', Middlewares.tokenValidade, ThemesController.createATheme);
 router.get('/themes?', ThemesController.getAllThemes);
 
 module.exports = router;

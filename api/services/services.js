@@ -19,7 +19,7 @@ class Services {
     return database[this.modelName].update(data, { where: { ...where } });
   }
   // Estilo de where esperado deleteRecord({where: {id: id}})
-  async deleteRecord(where) {
+  async deleteARecord(where) {
     return await database[this.modelName].destroy({ where: { ...where } });
   }
  
