@@ -14,5 +14,13 @@ class UsersServices extends Services {
       }
     }
   }
+
+  async getUserWithoutPassword(req){
+    const { id } = req.params;
+    const user = await this.findOneRecord({ id: Number(id) });
+    delete user.password
+
+    return user;
+  }
 }
 module.exports = new UsersServices();
