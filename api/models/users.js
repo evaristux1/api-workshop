@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const bcrypt = require('bcrypt');
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     /**
@@ -43,5 +44,13 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Users',
     freezeTableName: true
   });
+
+  Users.addHook('beforeSave', async users =>{
+    if(users.password){
+      const salt = await bcrypt.genSaltSync(10, 'a');
+      users.password = bcrypt.hashSync(users.password, salt);
+
+    }
+  })
   return Users;
 };
