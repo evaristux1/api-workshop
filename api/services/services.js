@@ -4,8 +4,8 @@ class Services {
     this.modelName = modelName;
   }
 
-  async getAllRecords() {
-    return database[this.modelName].findAll({raw: true});
+  async getAllRecords(where= {}) {
+    return database[this.modelName].findAll({where: { ...where }, raw: true});
   }
   // Estilo de where esperado findOneRecord({where: {id: id}})
   async findOneRecord(where = {}) {
