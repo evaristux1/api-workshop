@@ -11,6 +11,7 @@ module.exports = (app) => {
     morgan('dev'),
     express.urlencoded({ extended: true }),
     usersRoute,
-    themesRoute
+    themesRoute,
+    interestsRoute
   );
 };
