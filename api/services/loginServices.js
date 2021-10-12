@@ -1,5 +1,7 @@
 const Services = require("./services");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
 require("dotenv").config();
 const { SECRET } = process.env;
 class LoginServices extends Services {
@@ -11,16 +13,11 @@ class LoginServices extends Services {
 
     const user = await this.findOneRecord({
       email: email,
-      password: password,
     });
-
-    if (!user) {
+    if (!user || !bcrypt.compareSync(password, user.password))
       throw new Error("invalid email or password");
-    } else {
-      return jwt.sign({ id: user.id }, SECRET, {
-        expiresIn: "10h",
-      });
-    }
+
+    return jwt.sign({ id: user.id }, SECRET, {});
   }
   async validateUserToken(where) {
     const user = await this.findOneRecord(where);
