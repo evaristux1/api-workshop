@@ -1,5 +1,6 @@
 const Services = require("./services");
 const EmailRegistered = require("../errors/EmailRegistered");
+const UserWithoutPermission = require('../errors/UserWithoutPermission')
 class UsersServices extends Services {
   constructor() {
     super("Users");
@@ -21,6 +22,13 @@ class UsersServices extends Services {
     delete user.password
 
     return user;
+  }
+
+  async isUseraInstructor(req){
+    if(!(await this.findOneRecord({type: 'instructor', id: req.idUserToken}))){
+      throw new UserWithoutPermission();
+    }
+    
   }
 }
 module.exports = new UsersServices();

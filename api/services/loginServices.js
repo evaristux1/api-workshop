@@ -1,6 +1,7 @@
 const Services = require("./services");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const EmailOrPasswordInvalid = require('../errors/EmailOrPasswordInvalid');
 
 require("dotenv").config();
 const { SECRET } = process.env;
@@ -15,14 +16,14 @@ class LoginServices extends Services {
       email: email,
     });
     if (!user || !bcrypt.compareSync(password, user.password))
-      throw new Error("invalid email or password");
+      throw new EmailOrPasswordInvalid();
 
     return jwt.sign({ id: user.id }, SECRET, {});
   }
   async validateUserToken(where) {
     const user = await this.findOneRecord(where);
 
-    if (!user) throw new Error("invalid email or password");
+    if (!user) throw new EmailOrPasswordInvalid();
     return true;
   }
 }
