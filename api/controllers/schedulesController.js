@@ -20,9 +20,10 @@ class SchedulesController{
         data.userId = req.idUserToken;
 
         try{
+            await usersServices.isUseraInstructor(req);
             await schedulesServices.isDateLower(req);
-            await schedulesServices.createARecord(data);
-            res.end();
+            const {id} =  await schedulesServices.createARecord(data);
+            res.status(200).json({idCreated: id});
 
 
         }catch(error){
