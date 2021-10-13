@@ -33,22 +33,20 @@ class ThemesController{
 
     static async getThemeById(req, res) {
         try {
-            const data = await themesServices.findOneRecord({id: req.params.id});
-            const {name} = await usersServices.findOneRecord({id: data.userId});
-            const themeIdInterested = await interestsServices.getAllRecords({themeId: req.params.id})
+            const data = await themesServices.findInterestedtopic(req);
             //const interestedByName = await usersServices.getAllRecords({id:themeIdInterested.userId})
-           console.log(themeIdInterested)
+           console.log(data)
 
 
 
-            const formatData = { 
-                id: data.id,
-                title: data.title,
-                description: data.description,
-                createdByName: name
+            // const formatData = { 
+            //     id: data.id,
+            //     title: data.title,
+            //     description: data.description,
+            //     createdByName: name
                 
-            }
-        return res.status(200).json(formatData)
+            // }
+        return res.status(200).json(data)
         } catch(error){
           console.error(error)
        }

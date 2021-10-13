@@ -14,7 +14,11 @@ class ThemesServices extends Services {
       }
     }
   }
-
-
+  async findInterestedtopic(req) {
+    const { id } = req.params;
+    if (id) {
+      return await this.customQuery("SELECT * FROM users");
+    }
+  }
 }
 module.exports = new ThemesServices();
