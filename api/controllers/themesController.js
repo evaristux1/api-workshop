@@ -27,22 +27,12 @@ class ThemesController{
         }
     }
 
-    static async getThemeById(req, res){
-        try{
-            const data = await themesServices.findOneRecord({id: req.params.id})
-            return res.json(data)
-        }catch(error){
-
-        }
-    }
-
-
     static async getThemeById(req, res) {
         try {
             const data = await themesServices.findOneRecord({id: req.params.id});
             const {name} = await usersServices.findOneRecord({id: data.userId});
-            const id = await interestsServices.getAllRecords({themeId: req.params.id})
-            console.log(id.id)
+            const usersInteresteds = await interestsServices.getAllRecords({themeId: req.params.id})
+            console.log(usersInteresteds)
 
             const formatData = { 
                 id: data.id,
@@ -52,7 +42,7 @@ class ThemesController{
                 
             }
 
-        return res.status(200).json(id)
+        return res.status(200).json(formatData)
         } catch(error){
           console.error(error)
        }
