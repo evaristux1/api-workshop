@@ -1,5 +1,3 @@
-const DateLower = require('../errors/DateLower');
-const UserWithoutPermission = require('../errors/UserWithoutPermission')
 const errorsController = require('./errorsController');
 const {schedulesServices} = require('../services');
 const {usersServices} = require('../services');
@@ -17,12 +15,13 @@ class SchedulesController{
 
     static async createSchedule(req, res){
         let data = req.body;
-        data.userId = req.idUserToken;
+        data.instructorId = req.idUserToken;
 
         try{
+            await usersServices.isUseraInstructor(req);
             await schedulesServices.isDateLower(req);
-            await schedulesServices.createARecord(data);
-            res.end();
+            const {id} =  await schedulesServices.createARecord(data);
+            res.status(200).json({idCreated: id});
 
 
         }catch(error){
@@ -31,6 +30,24 @@ class SchedulesController{
         }
     
     }
+
+    static async updateASchedule(req, res){
+        const { id } = req.params;
+        try{
+            await usersServices.isUserAInstructor(req);
+            await schedulesServices.checkInstructorId(id, req)
+            await schedulesServices.isDateLower(req);
+            const data = await schedulesServices.filterSchedulesFields(req);
+            await schedulesServices.updateARecord(data, { id: Number(id) });
+            return res.status(204).end();
+
+        }catch(error){
+            const status = errorsController.getStatusToError(error);
+            return res.status(status).json({message: error.message});
+
+        }
+    }
+
 
 }
 

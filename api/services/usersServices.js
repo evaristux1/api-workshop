@@ -24,7 +24,7 @@ class UsersServices extends Services {
     return user;
   }
 
-  async isUseraInstructor(req){
+  async isUserAInstructor(req){
     if(!(await this.findOneRecord({type: 'instructor', id: req.idUserToken}))){
       throw new UserWithoutPermission();
     }

@@ -1,6 +1,9 @@
 const database = require ("../models")
 const {themesServices, usersServices} = require('../services');
 const interestsServices = require("../services/interestsServices");
+const { getInstructorName } = require("../services/schedulesServices");
+const schedulesServices = require("../services/schedulesServices");
+const errorsController = require('./errorsController');
 
 class ThemesController{
 
@@ -22,20 +25,11 @@ class ThemesController{
             const allThemes = await themesServices.createPagination(req);
             res.status(200).json(allThemes)
         }catch(error){
+            
             const status = errorsController.getStatusToError(error);
             return res.status(status).json({message: error.message});
         }
     }
-
-    static async getThemeById(req, res){
-        try{
-            const data = await themesServices.findOneRecord({id: req.params.id})
-            return res.json(data)
-        }catch(error){
-
-        }
-    }
-
 
     static async getThemeById(req, res) {
         try {
@@ -45,11 +39,13 @@ class ThemesController{
             //const interestedByName = await usersServices.getAllRecords({id:themeIdInterested.userId})
            console.log(themeIdInterested)
 
+
+
             const formatData = { 
                 id: data.id,
                 title: data.title,
                 description: data.description,
-                createdByName: name,
+                createdByName: name
                 
             }
         return res.status(200).json(formatData)
@@ -58,6 +54,18 @@ class ThemesController{
        }
       }
     
+
+      static async updateATheme(req, res) {
+        const { id } = req.params;
+        const data = req.body;
+        try {
+            await themesServices.updateARecord(data, { id: Number(id) });
+            return res.status(204).end();
+        } catch (error) {
+            const status = errorsController.getStatusToError(error);
+            return res.status(status).json({message: error.message});
+        }
+      }
 
         
 }
