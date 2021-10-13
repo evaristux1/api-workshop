@@ -1,5 +1,4 @@
 const UserWithoutPermission = require("../errors/UserWithoutPermission");
-const errorsController = require('./errorsController');
 const { usersServices } = require("../services");
 
 class UsersController {
@@ -9,7 +8,7 @@ class UsersController {
         const userCreated = await usersServices.createARecord(req.body);
         return res.status(201).json({ idUser: userCreated.id });
     } catch (error) {
-        const status = errorsController.getStatusToError(error);
+        const status = error.errorStatus;
         return res.status(status).json({message: error.message});
     }
   }
@@ -20,7 +19,7 @@ class UsersController {
         const user = await usersServices.getUserWithoutPassword(req);
         return res.status(200).json(user);
     } catch (error) {
-        const status = errorsController.getStatusToError(error);
+        const status = error.errorStatus;
         return res.status(status).json({message: error.message});
     }
   }
@@ -34,7 +33,7 @@ class UsersController {
         await usersServices.updateARecord(data, { id: Number(id) });
         return res.status(204).end();
     } catch (error) {
-        const status = errorsController.getStatusToError(error);
+        const status = error.errorStatus;
         return res.status(status).json({message: error.message});
     }
   }

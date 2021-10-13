@@ -1,5 +1,4 @@
 const { loginServices } = require("../services");
-const errorsController = require('./errorsController');
 
 class loginController {
   static async loginUser(req, res) {
@@ -7,7 +6,7 @@ class loginController {
       const token = await loginServices.signIn(req);
       return res.status(200).json({ token: token });
     } catch (error) {
-      const status = errorsController.getStatusToError(error);
+      const status = error.errorStatus;
       return res.status(status).json({message: error.message});
     }
   }

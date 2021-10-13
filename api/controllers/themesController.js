@@ -12,7 +12,7 @@ class ThemesController{
             const themeCreated = await themesServices.createARecord(data)
             return res.status(201).json({idTheme: themeCreated.id})
         }catch(error){
-            const status = errorsController.getStatusToError(error);
+            const status = error.errorStatus;
             return res.status(status).json({message: error.message});
         }
     }
@@ -22,17 +22,8 @@ class ThemesController{
             const allThemes = await themesServices.createPagination(req);
             res.status(200).json(allThemes)
         }catch(error){
-            const status = errorsController.getStatusToError(error);
+            const status = error.errorStatus;
             return res.status(status).json({message: error.message});
-        }
-    }
-
-    static async getThemeById(req, res){
-        try{
-            const data = await themesServices.findOneRecord({id: req.params.id})
-            return res.json(data)
-        }catch(error){
-
         }
     }
 

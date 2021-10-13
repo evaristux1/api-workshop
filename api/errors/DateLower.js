@@ -3,6 +3,7 @@ class DateLower extends Error{
         super('date must be greater than today');
         this.name = 'DateLower';
         this.idError = 5;
+        this.errorStatus = 400;
     }
 }
 

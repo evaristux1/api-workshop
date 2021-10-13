@@ -1,6 +1,5 @@
 const DateLower = require('../errors/DateLower');
 const UserWithoutPermission = require('../errors/UserWithoutPermission')
-const errorsController = require('./errorsController');
 const {schedulesServices} = require('../services');
 const {usersServices} = require('../services');
 class SchedulesController{
@@ -10,7 +9,7 @@ class SchedulesController{
             await usersServices.isUseraInstructor(req);
             res.end();
         }catch(error){
-            const status = errorsController.getStatusToError(error);
+            const status = error.errorStatus;
             return res.status(status).json({message: error.message});
         }
     }
@@ -20,13 +19,14 @@ class SchedulesController{
         data.userId = req.idUserToken;
 
         try{
+            await usersServices.isUseraInstructor(req);
             await schedulesServices.isDateLower(req);
             await schedulesServices.createARecord(data);
             res.end();
 
 
         }catch(error){
-            const status = errorsController.getStatusToError(error);
+            const status = error.errorStatus;
             return res.status(status).json({message: error.message});
         }
     

@@ -3,6 +3,7 @@ class InterestsRegistered extends Error{
         super('already registered interest');
         this.name = 'InterestsRegistered';
         this.idError = 4;
+        this.errorStatus = 400;
     }
 }
 
