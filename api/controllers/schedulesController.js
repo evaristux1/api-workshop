@@ -17,7 +17,7 @@ class SchedulesController{
 
     static async createSchedule(req, res){
         let data = req.body;
-        data.userId = req.idUserToken;
+        data.instructorId = req.idUserToken;
 
         try{
             await usersServices.isUseraInstructor(req);
