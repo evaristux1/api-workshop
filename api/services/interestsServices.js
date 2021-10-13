@@ -16,5 +16,24 @@ class InterestsServices extends Services {
     if(!interestFound) throw new NotFound('interest')
     return interestFound;
   }
+
+  async formatPagination(req){
+    const {pageSize = 5, page = 0} = req.query;
+    const data = await this.createPagination(req, {userId: req.idUserToken}, pageSize);
+
+    const dataFormated = await data.map(item =>{
+      return {
+        id: item.id,
+        userId: item.userId,
+        theme: item.themeId
+      }
+    })
+
+    return {
+      totalPages: page,
+      totalItems: dataFormated.length,
+      data: dataFormated
+    }
+  } 
 }
 module.exports = new InterestsServices();

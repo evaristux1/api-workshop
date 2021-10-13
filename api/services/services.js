@@ -23,27 +23,14 @@ class Services {
     return await database[this.modelName].destroy({ where: { ...where } });
   }
 
-  async createPagination(req){
-    const {pageSize = 5, page = 0} = req.query;
-    let where;
-    if(req.idUserToken){
-      where = {userId: req.idUserToken};
-    }else {
-      where = {}
-    }
-    const data = await this.getAllRecords(where, Number(pageSize), Number(page));
+  async createPagination(req, where = {}, pageSize){
+    const data = await this.getAllRecords(where, Number(pageSize));
     data.map(item =>{
       delete item.createdAt;
       delete item.updatedAt;
     })
-    const formatToPagination = {
-      totalPages: page,
-      totalItems: data.length,
-      data: data
-    }
-    return formatToPagination;
+    return data;
   }
- 
-}
+} 
 
 module.exports = Services;

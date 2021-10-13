@@ -1,5 +1,6 @@
 const database = require ("../models")
 const {themesServices, usersServices} = require('../services');
+const errorsController = require('./errorsController');
 const interestsServices = require("../services/interestsServices");
 
 class ThemesController{
@@ -19,7 +20,7 @@ class ThemesController{
 
     static async getAllThemes(req, res){
         try{
-            const allThemes = await themesServices.createPagination(req);
+            const allThemes = await themesServices.formatPagination(req)
             res.status(200).json(allThemes)
         }catch(error){
             
