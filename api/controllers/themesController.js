@@ -1,4 +1,7 @@
-const {themesServices} = require('../services')
+const database = require ("../models")
+const {themesServices, usersServices} = require('../services');
+const interestsServices = require("../services/interestsServices");
+
 
 class ThemesController{
 
@@ -31,6 +34,30 @@ class ThemesController{
             return res.status(400).json({message: error.message})
         }
     }
+
+
+    static async getThemeById(req, res) {
+        try {
+            const data = await themesServices.findOneRecord({id: req.params.id});
+            const {name} = await usersServices.findOneRecord({id: data.userId});
+            const id = await interestsServices.getAllRecords({themeId: req.params.id})
+            console.log(id.id)
+
+            const formatData = { 
+                id: data.id,
+                title: data.title,
+                description: data.description,
+                createdByName: name,
+                
+            }
+
+        return res.status(200).json(id)
+        } catch(error){
+          console.error(error)
+       }
+      }
+    
+    
 }
 
 module.exports = ThemesController;
