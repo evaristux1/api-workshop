@@ -8,7 +8,7 @@ class Services {
     return database[this.modelName].findAll({where: { ...where }, raw: true, limit: limit, offset: offset} );
   }
  
-  async findOneRecord(where = {}) {
+  async findOneRecord(where = {}, attribute) {
     return database[this.modelName].findOne({ where: { ...where }, raw: true});
   }
   async createARecord(data) {
@@ -25,7 +25,13 @@ class Services {
 
   async createPagination(req){
     const {pageSize = 5, page = 0} = req.query;
-    const data = await this.getAllRecords({userId: req.idUserToken}, Number(pageSize), Number(page));
+    let where;
+    if(req.idUserToken){
+      where = {userId: req.idUserToken};
+    }else {
+      where = {}
+    }
+    const data = await this.getAllRecords(where, Number(pageSize), Number(page));
     data.map(item =>{
       delete item.createdAt;
       delete item.updatedAt;

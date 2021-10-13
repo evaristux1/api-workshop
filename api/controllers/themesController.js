@@ -1,5 +1,5 @@
-const {themesServices} = require('../services')
-
+const {themesServices, usersServices} = require('../services')
+const errorsController = require('./errorsController');
 class ThemesController{
 
     static async createATheme(req, res){
@@ -10,25 +10,27 @@ class ThemesController{
             const themeCreated = await themesServices.createARecord(data)
             return res.status(201).json({idTheme: themeCreated.id})
         }catch(error){
-            return res.status(400).json({message: error.message})
+            const status = errorsController.getStatusToError(error);
+            return res.status(status).json({message: error.message});
         }
     }
 
     static async getAllThemes(req, res){
         try{
-            let {page, pageSize} = req.query;
-            if(!page || page <= 0) page = 1;
-            if(!pageSize || pageSize > 15 || pageSize <= 0) pageSize = 5;
-            
-            //TODO paginação, falta criar a paginação.
-            const allThemes = await themesServices.getAllRecords();
-            res.status(200).json({
-                totalPages: 1,
-                totalItems: allThemes.length,
-                data: allThemes
-            })
+            const allThemes = await themesServices.createPagination(req);
+            res.status(200).json(allThemes)
         }catch(error){
-            return res.status(400).json({message: error.message})
+            const status = errorsController.getStatusToError(error);
+            return res.status(status).json({message: error.message});
+        }
+    }
+
+    static async getThemeById(req, res){
+        try{
+            const data = await themesServices.findOneRecord({id: req.params.id})
+            return res.json(data)
+        }catch(error){
+
         }
     }
 }
