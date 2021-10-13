@@ -1,5 +1,5 @@
-const database = require("../models");
-
+const { database, sequelize } = require("../models");
+const { QueryTypes } = require("sequelize");
 class Services {
   constructor(modelName) {
     this.modelName = modelName;
@@ -29,7 +29,9 @@ class Services {
     return await database[this.modelName].destroy({ where: { ...where } });
   }
   async customQuery(query) {
-    return await database[this.modelName].findAll(query);
+    return await sequelize.query(query, {
+      type: QueryTypes.SELECT,
+    });
   }
 
   async createPagination(req) {
