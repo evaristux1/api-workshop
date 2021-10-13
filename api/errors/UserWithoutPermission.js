@@ -3,6 +3,7 @@ class UserWithoutPermission extends Error {
     super("user without permission");
     this.name = "UserWithoutPermission";
     this.idError = 3;
+    this.errorStatus = 403;
   }
 }
 
