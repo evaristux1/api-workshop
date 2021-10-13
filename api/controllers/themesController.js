@@ -41,8 +41,9 @@ class ThemesController{
         try {
             const data = await themesServices.findOneRecord({id: req.params.id});
             const {name} = await usersServices.findOneRecord({id: data.userId});
-            const id = await interestsServices.getAllRecords({themeId: req.params.id})
-            console.log(id.id)
+            const themeIdInterested = await interestsServices.getAllRecords({themeId: req.params.id})
+            //const interestedByName = await usersServices.getAllRecords({id:themeIdInterested.userId})
+           console.log(themeIdInterested)
 
             const formatData = { 
                 id: data.id,
@@ -51,14 +52,14 @@ class ThemesController{
                 createdByName: name,
                 
             }
-
-        return res.status(200).json(id)
+        return res.status(200).json(formatData)
         } catch(error){
           console.error(error)
        }
       }
     
-    
+
+        
 }
 
 module.exports = ThemesController;
