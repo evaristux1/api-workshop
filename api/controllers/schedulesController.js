@@ -18,7 +18,6 @@ class SchedulesController{
     static async createSchedule(req, res){
         let data = req.body;
         data.userId = req.idUserToken;
-
         try{
             await usersServices.isUseraInstructor(req);
             await schedulesServices.isDateLower(req);
@@ -30,8 +29,9 @@ class SchedulesController{
             const status = errorsController.getStatusToError(error);
             return res.status(status).json({message: error.message});
         }
-    
     }
+
+    
 
 }
 

@@ -13,9 +13,6 @@ class ThemesController{
             return res.status(201).json({idTheme: themeCreated.id})
         }catch(error){
             const status = errorsController.getStatusToError(error);
-
-
-
             return res.status(status).json({message: error.message});
         }
     }
