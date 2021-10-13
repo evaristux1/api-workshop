@@ -5,6 +5,7 @@ const router = Router();
 
 router.post('/schedules', Middlewares.tokenValidade, SchedulesController.createSchedule);
 router.get('/schedules?', Middlewares.tokenValidade, SchedulesController.getAllSchedules);
+router.patch('/schedules/:id', Middlewares.tokenValidade, SchedulesController.updateASchedule);
 
 
 
