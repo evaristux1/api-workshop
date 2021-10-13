@@ -1,5 +1,3 @@
-const DateLower = require('../errors/DateLower');
-const UserWithoutPermission = require('../errors/UserWithoutPermission')
 const errorsController = require('./errorsController');
 const {schedulesServices} = require('../services');
 const {usersServices} = require('../services');
@@ -18,6 +16,7 @@ class SchedulesController{
     static async createSchedule(req, res){
         let data = req.body;
         data.userId = req.idUserToken;
+
         try{
             await usersServices.isUseraInstructor(req);
             await schedulesServices.isDateLower(req);
@@ -29,9 +28,8 @@ class SchedulesController{
             const status = errorsController.getStatusToError(error);
             return res.status(status).json({message: error.message});
         }
-    }
-
     
+    }
 
 }
 
