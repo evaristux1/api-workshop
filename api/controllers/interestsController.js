@@ -8,7 +8,7 @@ class InterestsController {
     try {
       await interestsServices.alreadyInterestRegistered(req);
       const newInterests = await interestsServices.createARecord(data);
-      return res.status(201).json(newInterests.id);
+      return res.status(201).json({idInterest: newInterests.id});
     } catch (error) {
       const status = errorsController.getStatusToError(error);
       return res.status(status).json({ message: error.message });
@@ -34,7 +34,7 @@ class InterestsController {
             return res.status(200).json(userInterests);
         }catch(error){
             const status = errorsController.getStatusToError(error);
-            return res.status(status).json({message: error.message});
+            return res.status(status).json({message: error.message, idUserAuthenticated: req.idUserToken });
         }
     }
 }

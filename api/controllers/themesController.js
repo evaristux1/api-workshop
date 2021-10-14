@@ -1,9 +1,7 @@
-const database = require("../models");
-const { themesServices, usersServices } = require("../services");
+const { themesServices, usersServices, interestsServices} = require("../services");
 const errorsController = require("./errorsController");
-const interestsServices = require("../services/interestsServices");
-const { getInstructorName } = require("../services/schedulesServices");
 const schedulesServices = require("../services/schedulesServices");
+const { normalize } = require("path");
 
 class ThemesController {
   static async createATheme(req, res) {
@@ -21,7 +19,7 @@ class ThemesController {
 
   static async getAllThemes(req, res) {
     try {
-      const allThemes = await themesServices.createPagination(req);
+      const allThemes = await themesServices.formatPagination(req);
       res.status(200).json(allThemes);
     } catch (error) {
       const status = errorsController.getStatusToError(error);
@@ -43,17 +41,24 @@ class ThemesController {
         themes: id,
       });
 
-      let nameUserInterestsInTheme = [];
-
-      userInterestsInTheme.map((item) => {
-        nameUserInterestsInTheme.push(item["name"]);
+      const idUserInterestsInTheme = userInterestsInTheme.map((item) => {
+        return item["userId"];
       });
+
+      const usersInterests = await Promise.all(idUserInterestsInTheme.map(async item =>{
+        return await usersServices.findOneRecord({id: item});
+      }));
+      const nameUserInterests = usersInterests.map(item =>{
+        return item.name;
+      })
+      
+
       const formatData = {
         id: theme[0].id,
         title: theme[0].title,
         description: theme[0].description,
         createdByName: theme[0].name,
-        interesteds: nameUserInterestsInTheme,
+        interesteds: nameUserInterests,
         schedule: allSchedulesByTheme,
       };
       return res.status(200).json(formatData);

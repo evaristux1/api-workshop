@@ -16,13 +16,21 @@ class ThemesServices extends Services {
   }
 
   async formatPagination(req){
-    const {pageSize = 5, page = 0} = req.query;
-    const data = await this.createPagination(req,{}, pageSize);
+    const {pageSize = 5} = req.query;
+    const data = await this.createPagination(req, pageSize);
+    const dataFormated = data.map(item =>{
+      return {
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        userId: item.userId
+      }
+    })
 
     return {
-      totalPages: page,
-      totalItems: data.length,
-      data: data
+      totalPages: 1,
+      totalItems: dataFormated.length,
+      data: dataFormated
     }
   } 
 

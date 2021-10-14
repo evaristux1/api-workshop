@@ -15,7 +15,7 @@ class Services {
     });
   }
 
-  async findOneRecord(where = {}, attribute) {
+  async findOneRecord(where = {}) {
     return database[this.modelName].findOne({ where: { ...where }, raw: true });
   }
   async createARecord(data) {
@@ -34,15 +34,14 @@ class Services {
       type: QueryTypes.SELECT,
     });
   }
-  async createPagination(req) {
-    const { pageSize = 5, page = 0 } = req.query;
+  async createPagination(req, pageSize) {
     let where;
     if (req.idUserToken) {
       where = { userId: req.idUserToken };
     } else {
       where = {};
     }
-    return await this.getAllRecords(where, Number(pageSize), Number(page));
+    return await this.getAllRecords(where, Number(pageSize));
   }
 }
 module.exports = Services;
