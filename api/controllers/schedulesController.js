@@ -21,35 +21,17 @@ class SchedulesController{
     
     }
 
-    static async getAllSchedules(req, res){
+    static async getSchedulesOfInstructor(req, res){
         let data = req.body;
         data.instructorId = req.idUserToken;
         console.log(data.instructorId)
-
         try{
             const all = await schedulesServices.formatPagination(req)
             return res.status(200).json(all);
         }catch(error){
+            console.error(error)
             const status = errorsController.getStatusToError(error);
             return res.status(status).json({message: error.message});
-        }
-    }
-
-    static async updateASchedule(req, res){
-        const { id } = req.params;
-        try{
-            await usersServices.isUseraInstructor(req);
-            await schedulesServices.isDateLower(req);
-            const data = await schedulesServices.filterSchedulesFields(req);
-            const updated =  await schedulesServices.updateARecord(data, { id: Number(id) });
-            const {instructorId} = await schedulesServices.findOneRecord({ id: Number(id) });
-            if (req.idUserToken != instructorId) throw new UserWithoutPermission();
-            return res.status(204).json(updated);
-            
-        }catch(error){
-            const status = errorsController.getStatusToError(error);
-            return res.status(status).json({message: error.message});
-
         }
     }
 

@@ -34,13 +34,7 @@ class Services {
       type: QueryTypes.SELECT,
     });
   }
-  async createPagination(req, pageSize) {
-    let where;
-    if (req.idUserToken) {
-      where = { userId: req.idUserToken };
-    } else {
-      where = {};
-    }
+  async createPagination(req, pageSize, where ={}){
     return await this.getAllRecords(where, Number(pageSize));
   }
 }
