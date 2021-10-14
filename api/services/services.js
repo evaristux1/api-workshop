@@ -22,7 +22,11 @@ class Services {
   async deleteARecord(where) {
     return await database[this.modelName].destroy({ where: { ...where } });
   }
-
+  async customQuery(query) {
+    return await sequelize.query(query, {
+      type: QueryTypes.SELECT,
+    });
+  }
   async createPagination(req){
     const {pageSize = 5, page = 0} = req.query;
     let where;
