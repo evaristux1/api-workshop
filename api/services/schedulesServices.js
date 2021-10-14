@@ -32,6 +32,24 @@ class SchedulesServices extends Services{
         if (req.idUserToken != instructorId) throw new UserWithoutPermission();
       }
 
+      async formatPagination(req){
+        const {pageSize = 5, page = 0} = req.query;
+        const data = await this.createPagination(req,{instructorId: req.body.instructorId}, pageSize);
+    
+        const dataFormated = await data.map(item =>{
+          return {
+            id: item.id,
+            themes: item.themes
+          }
+        })
+    
+        return {
+          totalPages: page,
+          totalItems: dataFormated.length,
+          data: dataFormated
+        }
+      } 
+
 
 
 }

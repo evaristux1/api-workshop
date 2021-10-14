@@ -20,5 +20,17 @@ class ThemesServices extends Services {
       return await this.customQuery("SELECT * FROM users");
     }
   }
+
+  async formatPagination(req){
+    const {pageSize = 5, page = 0} = req.query;
+    const data = await this.createPagination(req,{}, pageSize);
+
+    return {
+      totalPages: page,
+      totalItems: data.length,
+      data: data
+    }
+  } 
+
 }
 module.exports = new ThemesServices();

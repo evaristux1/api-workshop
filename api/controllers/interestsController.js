@@ -28,15 +28,15 @@ class InterestsController {
     }
   }
 
-  static async getUserInterests(req, res) {
-    try {
-      const userInterests = await interestsServices.createPagination(req);
-      return res.status(200).json(userInterests);
-    } catch (error) {
-      const status = errorsController.getStatusToError(error);
-      return res.status(status).json({ message: error.message });
+    static async getUserInterests(req, res){
+        try{
+            const userInterests = await interestsServices.formatPagination(req)
+            return res.status(200).json(userInterests);
+        }catch(error){
+            const status = errorsController.getStatusToError(error);
+            return res.status(status).json({message: error.message});
+        }
     }
-  }
 }
 
 module.exports = InterestsController;

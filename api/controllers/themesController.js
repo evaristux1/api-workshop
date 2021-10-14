@@ -1,5 +1,6 @@
-const database = require("../models");
+const database = require ("../models")
 const { themesServices, usersServices } = require("../services");
+const errorsController = require('./errorsController');
 const interestsServices = require("../services/interestsServices");
 const { getInstructorName } = require("../services/schedulesServices");
 const schedulesServices = require("../services/schedulesServices");
