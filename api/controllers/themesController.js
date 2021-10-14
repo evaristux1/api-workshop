@@ -1,10 +1,9 @@
-const database = require ("../models")
+const database = require("../models");
 const { themesServices, usersServices } = require("../services");
-const errorsController = require('./errorsController');
+const errorsController = require("./errorsController");
 const interestsServices = require("../services/interestsServices");
 const { getInstructorName } = require("../services/schedulesServices");
 const schedulesServices = require("../services/schedulesServices");
-const errorsController = require("./errorsController");
 
 class ThemesController {
   static async createATheme(req, res) {
@@ -32,18 +31,32 @@ class ThemesController {
 
   static async getThemeById(req, res) {
     try {
-      const data = await themesServices.findInterestedtopic(req);
-      //const interestedByName = await usersServices.getAllRecords({id:themeIdInterested.userId})
-      console.log(data);
+      const { id } = req.params;
+      const theme = await themesServices.customQuery(
+        `SELECT * FROM Themes AS t1 JOIN Users AS t2 ON t1.UserId = t2.id WHERE t1.id =${id}`
+      );
 
-      // const formatData = {
-      //     id: data.id,
-      //     title: data.title,
-      //     description: data.description,
-      //     createdByName: name
+      const userInterestsInTheme = await interestsServices.getAllRecords({
+        themeId: id,
+      });
+      const allSchedulesByTheme = await schedulesServices.getAllRecords({
+        themes: id,
+      });
 
-      // }
-      return res.status(200).json(data);
+      let nameUserInterestsInTheme = [];
+
+      userInterestsInTheme.map((item) => {
+        nameUserInterestsInTheme.push(item["name"]);
+      });
+      const formatData = {
+        id: theme[0].id,
+        title: theme[0].title,
+        description: theme[0].description,
+        createdByName: theme[0].name,
+        interesteds: nameUserInterestsInTheme,
+        schedule: allSchedulesByTheme,
+      };
+      return res.status(200).json(formatData);
     } catch (error) {
       console.error(error);
     }

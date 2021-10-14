@@ -1,4 +1,6 @@
 const database = require("../models");
+const {sequelize} = require("../models");
+const { QueryTypes } = require("sequelize");
 class Services {
   constructor(modelName) {
     this.modelName = modelName;
@@ -40,11 +42,7 @@ class Services {
     } else {
       where = {};
     }
-    const data = await this.getAllRecords(
-      where,
-      Number(pageSize),
-      Number(page)
-    );
+    return await this.getAllRecords(where, Number(pageSize), Number(page));
   }
 }
 module.exports = Services;
