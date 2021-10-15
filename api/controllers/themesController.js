@@ -1,7 +1,12 @@
-const { themesServices, usersServices, interestsServices} = require("../services");
+const {
+  themesServices,
+  usersServices,
+  interestsServices,
+} = require("../services");
 const errorsController = require("./errorsController");
 const schedulesServices = require("../services/schedulesServices");
 const { normalize } = require("path");
+const schedulesThemesServices = require("../services/schedulesThemesServices");
 
 class ThemesController {
   static async createATheme(req, res) {
@@ -45,13 +50,25 @@ class ThemesController {
         return item["userId"];
       });
 
-      const usersInterests = await Promise.all(idUserInterestsInTheme.map(async item =>{
-        return await usersServices.findOneRecord({id: item});
-      }));
-      const nameUserInterests = usersInterests.map(item =>{
+      const usersInterests = await Promise.all(
+        idUserInterestsInTheme.map(async (item) => {
+          return await usersServices.findOneRecord({ id: item });
+        })
+      );
+      const nameUserInterests = usersInterests.map((item) => {
         return item.name;
-      })
-      
+      });
+      const scheduleHaveTheme = await schedulesServices.customQuery(
+        `SELECT t1.id,t3.name,t1.date FROM Schedules AS t1 
+        JOIN Schedules_themes AS t2 ON t1.id = t2.ScheduleId
+        JOIN Users            AS t3 ON t1.instructorId = t3.id
+        WHERE t2.themeId =${id}`
+      );
+      const allThemesofSchedule = await schedulesThemesServices.customQuery(
+        `SELECT t2.id,t2.theme FROM Schedules_themes AS t1 
+        JOIN Themes AS t2 ON t1.themeId = t2.id
+        WHERE t2.scheduleId =${scheduleHaveTheme[0].id}`
+      );
 
       const formatData = {
         id: theme[0].id,
@@ -59,7 +76,11 @@ class ThemesController {
         description: theme[0].description,
         createdByName: theme[0].name,
         interesteds: nameUserInterests,
-        schedule: allSchedulesByTheme,
+        schedule: {
+          instructor: scheduleHaveTheme[0].name,
+          date: scheduleHaveTheme[0].date,
+          themes: allThemesofSchedule,
+        },
       };
       return res.status(200).json(formatData);
     } catch (error) {
