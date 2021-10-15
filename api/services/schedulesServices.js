@@ -3,6 +3,8 @@ const DateLower = require("../errors/DateLower");
 const UserWithoutPermission = require("../errors/UserWithoutPermission");
 const schedulesThemesServices = require("../services/schedulesThemesServices");
 const themesServices = require('../services/themesServices')
+const interestsServices = require('../services/interestsServices')
+const userServices = require('../services/usersServices')
 
 class SchedulesServices extends Services {
   constructor() {
@@ -37,7 +39,6 @@ class SchedulesServices extends Services {
     });
 
     const themesFromSchedules = await this.getSchedulesThemes(data);
-    console.log(themesFromSchedules)
     let count = 0;
     const dataFormated = await Promise.all(data.map(async item => {
       const data = {
@@ -60,7 +61,12 @@ class SchedulesServices extends Services {
       const schedules = await schedulesThemesServices.getAllRecords({scheduleId: item.id});
       const themes = Promise.all(schedules.map(async item=>{
         const {id, title} = await themesServices.findOneRecord({id: item.themeId})
-        return {id: id, title: title}
+        const interested = await interestsServices.getAllRecords({themeId: id})
+        const nameOfInterested = await Promise.all(interested.map(async item =>{
+          const {name} = await userServices.findOneRecord({id: item.userId})
+          return name;
+        }))
+        return {id: id, title: title, interesteds: nameOfInterested}
       }))
        return themes;
       }))  
