@@ -3,9 +3,9 @@ const errorsController = require("./errorsController");
 const { interestsServices } = require("../services");
 class InterestsController {
   static async createAInterest(req, res) {
-    let data = req.body;
-    data.userId = req.idUserToken;
     try {
+      let data = req.body;
+      data.userId = req.idUserToken;
       await interestsServices.alreadyInterestRegistered(req);
       const newInterests = await interestsServices.createARecord(data);
       return res.status(201).json({idInterest: newInterests.id});
