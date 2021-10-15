@@ -26,6 +26,7 @@ class SchedulesController {
     let data = req.body;
     data.instructorId = req.idUserToken;
     try {
+      await usersServices.isUseraInstructor(req);
       const all = await schedulesServices.formatPagination(req);
       return res.status(200).json(all);
     } catch (error) {
@@ -51,6 +52,7 @@ class SchedulesController {
   }
   static async createScheduleTheme(req, res) {
     try {
+      await usersServices.isUseraInstructor(req);
       const { themeId } = req.body;
       const { id } = req.params;
       const idInstructor = req.idUserToken;
@@ -66,6 +68,7 @@ class SchedulesController {
   }
   static async deleteScheduleTheme(req, res) {
     try {
+      await usersServices.isUseraInstructor(req);
       const { id, themeId } = req.body;
       const idInstructor = req.idUserToken;
 
