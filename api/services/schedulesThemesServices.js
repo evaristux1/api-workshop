@@ -11,16 +11,14 @@ class SchedulesThemesServices extends Services {
     themes.map((id) => {
       this.createARecord({
         scheduleId: scheduleId,
-        themeId: id,
+        themeId: id,  
       });
     });
   }
   async deleteThemesSchedules(themeId, scheduleId) {
     return this.deleteARecord({
-      where: {
         themeId: themeId,
         scheduleId: scheduleId,
-      },
     });
   }
 

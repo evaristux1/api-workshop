@@ -24,7 +24,7 @@ router.patch(
   SchedulesController.updateASchedule
 );
 router.delete(
-    " /schedules/:id/themes/:themeId",
+    "/schedules/:id/themes/:themeId",
     Middlewares.tokenValidade,
     SchedulesController.deleteScheduleTheme
   );

@@ -42,7 +42,7 @@ class ThemesServices extends Services {
       data: dataFormated,
     };
   }
-  static async themeAtInstructor(userId, themeId) {
+  async themeAtInstructor(userId, themeId) {
     const themeIsInstructor = await this.findOneRecord({
       userId: userId,
       id: themeId,
