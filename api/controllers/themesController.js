@@ -38,7 +38,7 @@ class ThemesController {
       const theme = await themesServices.customQuery(
         `SELECT * FROM Themes AS t1 JOIN Users AS t2 ON t1.UserId = t2.id WHERE t1.id =${id}`
       );
-
+      console.log(theme);
       const userInterestsInTheme = await interestsServices.getAllRecords({
         themeId: id,
       });
@@ -55,20 +55,29 @@ class ThemesController {
           return await usersServices.findOneRecord({ id: item });
         })
       );
-      const nameUserInterests = usersInterests.map((item) => {
-        return item.name;
-      });
+      const nameUserInterests =
+        usersInterests[0]!= null
+          ? usersInterests.map((item) => {
+              return item.name;
+            })
+          : [];
       const scheduleHaveTheme = await schedulesServices.customQuery(
         `SELECT t1.id,t3.name,t1.date FROM Schedules AS t1 
-        JOIN Schedules_themes AS t2 ON t1.id = t2.ScheduleId
+        JOIN Schedules_themes AS t2 ON t1.id = t2.scheduleId
         JOIN Users            AS t3 ON t1.instructorId = t3.id
         WHERE t2.themeId =${id}`
       );
       const allThemesofSchedule = await schedulesThemesServices.customQuery(
         `SELECT t2.id,t2.theme FROM Schedules_themes AS t1 
         JOIN Themes AS t2 ON t1.themeId = t2.id
+<<<<<<< HEAD
         WHERE t2.scheduleId =${scheduleHaveTheme[0].id}`
       );
+=======
+        WHERE t1.scheduleId =${scheduleHaveTheme[0].id}`
+          )
+        : [];
+>>>>>>> 75de624d2cf3b799d12a885b6948ed19e4355f17
 
       const formatData = {
         id: theme[0].id,

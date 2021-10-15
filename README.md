@@ -9,6 +9,7 @@ Esta API é uma plataforma onde pessoas possam cadastrar seus interesses em tema
 - Requisitos: NPM e Node.js
 - Rodar npm i para instalar todas as dependências
 - Porta padrão: 3000
+- Colocar seus dados referentes ao banco de dados em um arquivo .env, seguindo o exemplo que consta no arquivo .env.example.
 
 **Passo a passo - no terminal:**
 
