@@ -35,8 +35,6 @@ class SchedulesServices extends Services {
       instructorId: req.idUserToken,
     });
 
-    schedulesThemesServices.getAllRecords
-
     const dataFormated = await data.map((item) => {
       return {
         id: item.id,

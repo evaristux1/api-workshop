@@ -1,5 +1,6 @@
 const Services = require("./services");
 const ThemeRegistered = require("../errors/ThemeRegistered");
+const UserWithoutPermission = require('../errors/UserWithoutPermission')
 class ThemesServices extends Services {
   constructor() {
     super("Themes");
