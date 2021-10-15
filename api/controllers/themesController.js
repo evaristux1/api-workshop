@@ -55,7 +55,6 @@ class ThemesController {
           return await usersServices.findOneRecord({ id: item });
         })
       );
-      console.log("🚀 ~ file: themesController.js ~ line 58 ~ ThemesController ~ getThemeById ~ usersInterests", usersInterests)
       const nameUserInterests =
         usersInterests[0]!= null
           ? usersInterests.map((item) => {
