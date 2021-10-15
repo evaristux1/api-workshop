@@ -34,7 +34,7 @@ class ThemesController {
 
   static async getThemeById(req, res) {
     try {
-      
+
       const { id } = req.params;
       const theme = await themesServices.customQuery(
         `SELECT * FROM Themes AS t1 JOIN Users AS t2 ON t1.UserId = t2.id WHERE t1.id =${id}`
@@ -68,14 +68,8 @@ class ThemesController {
       const allThemesofSchedule = await schedulesThemesServices.customQuery(
         `SELECT t2.id,t2.theme FROM Schedules_themes AS t1 
         JOIN Themes AS t2 ON t1.themeId = t2.id
-<<<<<<< HEAD
         WHERE t2.scheduleId =${scheduleHaveTheme[0].id}`
       );
-=======
-        WHERE t1.scheduleId =${scheduleHaveTheme[0].id}`
-          )
-        : [];
->>>>>>> 75de624d2cf3b799d12a885b6948ed19e4355f17
 
       const formatData = {
         id: theme[0].id,
