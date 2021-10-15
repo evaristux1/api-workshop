@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Schedules.init({
-    themes: DataTypes.INTEGER,
     instructorId: DataTypes.INTEGER,
     title: DataTypes.STRING,
     description: DataTypes.STRING,
