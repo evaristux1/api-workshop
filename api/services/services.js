@@ -27,6 +27,7 @@ class Services {
   }
 
   async deleteARecord(where) {
+    console.log(where);
     return await database[this.modelName].destroy({ where: { ...where } });
   }
   async customQuery(query) {

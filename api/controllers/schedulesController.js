@@ -69,11 +69,11 @@ class SchedulesController {
   static async deleteScheduleTheme(req, res) {
     try {
       await usersServices.isUseraInstructor(req);
-      const { id, themeId } = req.body;
+      const { id, themeId } = req.params;
       const idInstructor = req.idUserToken;
 
       await themesServices.themeAtInstructor(idInstructor, themeId);
-      await schedulesThemesServices.deleteThemesSchedules(themeId, id);
+      await schedulesThemesServices.deleteThemesSchedules(Number(themeId), Number(id));
       return res.status(204).end();
     } catch (error) {
       console.error(error);
