@@ -33,6 +33,7 @@ class InterestsController {
             const userInterests = await interestsServices.formatPagination(req)
             return res.status(200).json(userInterests);
         }catch(error){
+            console.error(error)
             const status = errorsController.getStatusToError(error);
             return res.status(status).json({message: error.message, idUserAuthenticated: req.idUserToken });
         }

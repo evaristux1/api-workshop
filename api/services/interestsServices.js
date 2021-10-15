@@ -18,8 +18,7 @@ class InterestsServices extends Services {
   }
 
   async formatPagination(req){
-    const {pageSize = 5, page = 0} = req.query;
-    const data = await this.createPagination(req, pageSize, {userId: req.idUserToken});
+    const {data, page, dataTotal} = await this.createPagination(req, {userId: req.idUserToken});
 
     const dataFormated = await data.map(item =>{
       return {
@@ -31,7 +30,7 @@ class InterestsServices extends Services {
 
     return {
       totalPages: page,
-      totalItems: dataFormated.length,
+      totalItems: dataTotal,
       data: dataFormated
     }
   } 

@@ -34,8 +34,19 @@ class Services {
       type: QueryTypes.SELECT,
     });
   }
-  async createPagination(req, pageSize, where ={}){
-    return await this.getAllRecords(where, Number(pageSize));
+  async createPagination(req, where ={}){
+    let {page = 1, pageSize = 5} = req.query;
+    if(page > 0){
+      page -= 1
+    }
+    if(pageSize > 15) throw new Error('pageSize is greater than 15')
+    const offSet = page * pageSize;
+    const data = await this.getAllRecords(where, Number(pageSize), offSet);
+    const dataTotal = await this.getAllRecords(where);
+    let pageTotal = Math.round(dataTotal.length / pageSize)
+    pageTotal += 1;
+
+    return {data: data, page: pageTotal, dataTotal: dataTotal.length}
   }
 }
 module.exports = Services;

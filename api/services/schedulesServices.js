@@ -1,6 +1,7 @@
 const Services = require("./services");
 const DateLower = require("../errors/DateLower");
 const UserWithoutPermission = require("../errors/UserWithoutPermission");
+const schedulesThemesServices = require("../services/schedulesThemesServices");
 
 class SchedulesServices extends Services {
   constructor() {
@@ -30,10 +31,11 @@ class SchedulesServices extends Services {
   }
 
   async formatPagination(req) {
-    const { pageSize = 5 } = req.query;
-    const data = await this.createPagination(req, pageSize, {
+    const {data, page, dataTotal} = await this.createPagination(req, {
       instructorId: req.idUserToken,
     });
+
+    schedulesThemesServices.getAllRecords
 
     const dataFormated = await data.map((item) => {
       return {
@@ -43,8 +45,8 @@ class SchedulesServices extends Services {
     });
 
     return {
-      totalPages: 1,
-      totalItems: dataFormated.length,
+      totalPages: page,
+      totalItems: dataTotal,
       data: dataFormated,
     };
   }

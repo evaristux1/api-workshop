@@ -67,7 +67,7 @@ class ThemesController {
 
       const allThemesofSchedule = scheduleHaveTheme.length
         ? await schedulesThemesServices.customQuery(
-            `SELECT t2.id,t2.theme FROM Schedules_themes AS t1 
+            `SELECT t2.id,t2.title FROM Schedules_themes AS t1 
         JOIN Themes AS t2 ON t1.themeId = t2.id
         WHERE t2.scheduleId =${scheduleHaveTheme[0].id}`
           )
