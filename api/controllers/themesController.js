@@ -64,25 +64,33 @@ class ThemesController {
         JOIN Users            AS t3 ON t1.instructorId = t3.id
         WHERE t2.themeId =${id}`
       );
-      const allThemesofSchedule = await schedulesThemesServices.customQuery(
-        `SELECT t2.id,t2.theme FROM Schedules_themes AS t1 
+      console.log(
+        "🚀 ~ file: themesController.js ~ line 67 ~ ThemesController ~ getThemeById ~ scheduleHaveTheme",
+        scheduleHaveTheme
+      );
+      if (scheduleHaveTheme.length) {
+        const allThemesofSchedule = await schedulesThemesServices.customQuery(
+          `SELECT t2.id,t2.theme FROM Schedules_themes AS t1 
         JOIN Themes AS t2 ON t1.themeId = t2.id
         WHERE t2.scheduleId =${scheduleHaveTheme[0].id}`
-      );
+        );
 
-      const formatData = {
-        id: theme[0].id,
-        title: theme[0].title,
-        description: theme[0].description,
-        createdByName: theme[0].name,
-        interesteds: nameUserInterests,
-        schedule: {
-          instructor: scheduleHaveTheme[0].name,
-          date: scheduleHaveTheme[0].date,
-          themes: allThemesofSchedule,
-        },
-      };
-      return res.status(200).json(formatData);
+        const formatData = {
+          id: theme[0].id,
+          title: theme[0].title,
+          description: theme[0].description,
+          createdByName: theme[0].name,
+          interesteds: nameUserInterests,
+          schedule: {
+            instructor: scheduleHaveTheme[0].name,
+            date: scheduleHaveTheme[0].date,
+            themes: allThemesofSchedule,
+          },
+        };
+        return res.status(200).json(formatData);
+      } else {
+        return res.status(200).json("no have data");
+      }
     } catch (error) {
       console.error(error);
     }
