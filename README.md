@@ -19,7 +19,7 @@ Esta API é uma plataforma onde pessoas possam cadastrar seus interesses em tema
 
    
 
-2. Após clonar, instalar as dependências:
+2. Após clonar e instalar as dependências:
 
    ```js
    npm start
