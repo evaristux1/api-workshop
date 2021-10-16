@@ -45,7 +45,7 @@ class Services {
     const data = await this.getAllRecords(where, Number(pageSize), offSet);
     const dataTotal = await this.getAllRecords(where);
     let pageTotal = Math.round(dataTotal.length / pageSize)
-    if(dataTotal.length > pageSize) pageTotal += 1; 
+    if(dataTotal.length < pageSize) pageTotal += 1; 
 
     return {data: data, page: pageTotal, dataTotal: dataTotal.length}
   }
