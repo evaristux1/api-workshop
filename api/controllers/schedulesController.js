@@ -14,6 +14,7 @@ class SchedulesController {
       await usersServices.isUseraInstructor(req);
       await schedulesServices.isDateLower(req);
       const { id } = await schedulesServices.createARecord(data);
+      await schedulesThemesServices.createThemesSchedules(themes, id);
       res.status(200).json({ idCreated: id });
     } catch (error) {
       const status = errorsController.getStatusToError(error);
